@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package auth;
+
+service AuthService {
+  rpc ValidateOrCreateUser (UserRequest) returns (UserResponse);
+}
+
+message UserRequest {
+  string clerkUserId = 1;
+  string email = 2;
+}
+
+message UserResponse {
+  string role = 1;
+  bool active = 2;
+}

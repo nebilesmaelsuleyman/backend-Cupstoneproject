@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./apps/school-management/test/jest-e2e.json"
   },
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^4.13.23",
     "@grpc/grpc-js": "^1.14.3",
     "@grpc/proto-loader": "^0.8.0",
     "@nestjs/common": "^11.0.1",
