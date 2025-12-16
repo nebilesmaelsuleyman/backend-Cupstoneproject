@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { ApiGetewayModule } from './api-geteway.module';
+import { AppModule } from './api-geteway.module';
 import { credentials } from '@grpc/grpc-js';
 
 async function bootstrap() {
-  const app = await NestFactory.create(ApiGetewayModule);
+  const app = await NestFactory.create(AppModule);
   app.enableCors({
     origin:[
       'http://localhost:3000',

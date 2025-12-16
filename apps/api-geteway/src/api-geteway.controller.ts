@@ -1,12 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiGetewayService } from './api-geteway.service';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { JwtGuard } from './auth/jwt.guard';
+import { AuthService } from './auth/auth.service';
 
 @Controller()
-export class ApiGetewayController {
-  constructor(private readonly apiGetewayService: ApiGetewayService) {}
+export class AppController {
+  constructor(private authService: AuthService) {}
 
-  @Get()
-  getHello(): string {
-    return this.apiGetewayService.getHello();
+  @UseGuards(JwtGuard)
+  @Get('me')
+  async me(@Req() req) {
+    const clerkUserId = req.user.sub;
+    return this.authService.getUser(clerkUserId);
   }
 }

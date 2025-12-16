@@ -1,26 +1,19 @@
-// api-gateway/src/auth/jwt.guard.ts
 import { CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { verifyToken } from '@clerk/clerk-sdk-node';
 
-export class JwtAuthGuard implements CanActivate {
-  async canActivate(context: ExecutionContext) {
-    const req = context.switchToHttp().getRequest();
-    const authHeader = req.headers.authorization;
+export class JwtGuard implements CanActivate {
+  async canActivate(ctx: ExecutionContext) {
+    const req = ctx.switchToHttp().getRequest();
+    const token = req.headers.authorization?.replace('Bearer ', '');
 
-    if (!authHeader) throw new UnauthorizedException();
+    if (!token) throw new UnauthorizedException();
 
-    const token = authHeader.replace('Bearer ', '');
+    const payload = await verifyToken(token, {
+      secretKey: process.env.CLERK_SECRET_KEY,
+      issuer: null
+    });
 
-    try {
-      const payload = await verifyToken(token, {
-          secretKey: process.env.CLERK_SECRET_KEY,
-          issuer: null
-      });
-
-      req.user = payload;
-      return true;
-    } catch {
-      throw new UnauthorizedException();
-    }
+    req.user = payload;
+    return true;
   }
 }

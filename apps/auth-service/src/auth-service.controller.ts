@@ -2,7 +2,7 @@ import { Controller } from '@nestjs/common'
 import { GrpcMethod } from '@nestjs/microservices'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
-import { User } from './user.schema'
+import { User } from './user/user.schema'
 
 @Controller()
 export class AuthController {
