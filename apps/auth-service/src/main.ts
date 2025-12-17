@@ -3,26 +3,36 @@ import { AuthServiceModule } from './auth-service.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 import { Logger } from '@nestjs/common';
+import * as express from 'express';
 
 async function bootstrap() {
   const logger = new Logger('AuthService');
-  const GRPC_URL = 'localhost:5001';
 
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AuthServiceModule,
-    {
-      transport: Transport.GRPC,
-      options: {
-        package: "auth", // Ensure this matches your proto 'package auth;'
-        protoPath: join(process.cwd(), 'proto/auth.proto'),
-        url: GRPC_URL,
-      }
-    }
-  );
+  // 🔹 HTTP SERVER (for Clerk webhook)
+  const app = await NestFactory.create(AuthServiceModule);
 
-  await app.listen();
-  
-  // This will show up clearly in your terminal
-  logger.log(`✅ Auth Microservice is listening on: ${GRPC_URL}`);
+
+  app.use(express.json());
+
+  await app.listen(3002);
+  logger.log('🌐 HTTP server listening on http://localhost:3002');
+
+
+  const grpc =
+    await NestFactory.createMicroservice<MicroserviceOptions>(
+      AuthServiceModule,
+      {
+        transport: Transport.GRPC,
+        options: {
+          package: 'auth',
+          protoPath: join(process.cwd(), 'proto/auth.proto'),
+          url: 'localhost:5001',
+        },
+      },
+    );
+
+  await grpc.listen();
+  logger.log('🔌 gRPC listening on localhost:5001');
 }
+
 bootstrap();
