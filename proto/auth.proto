@@ -2,16 +2,47 @@ syntax = "proto3";
 
 package auth;
 
-service AuthService {
-  rpc ValidateOrCreateUser (UserRequest) returns (UserResponse);
+// The service definition
+service AuthService{
+  // Validate or create user
+  rpc ValidateOrCreateUser(ValidateOrCreateUserRequest) returns (UserResponse) {}
+
+  // Extract user data
+  rpc GetUserByClerkId (GetUserRequest) returns (UserResponse) {}
+  
+  // Create new user
+  rpc CreateUser (CreateUserRequest) returns (UserResponse) {}
+  
+  // Update user data
+  rpc UpdateUserByClerkId (UpdateUserRequest) returns (UserResponse) {}
 }
 
-message UserRequest {
-  string clerkUserId = 1;
+// Request messages
+message GetUserRequest {
+  string clerk_user_id = 1;
+}
+
+message ValidateOrCreateUserRequest {
+  string clerk_user_id = 1;
   string email = 2;
 }
 
+message CreateUserRequest {
+  string clerk_user_id = 1;
+  string email = 2;
+  string role = 3;
+}
+
+message UpdateUserRequest {
+  string clerk_user_id = 1;
+  optional string email = 2; 
+  optional string role = 3;
+}
+
+// Response message
 message UserResponse {
-  string role = 1;
-  bool active = 2;
+  string id = 1;            
+  string clerk_user_id = 2;
+  string email = 3;
+  string role = 4;
 }

@@ -10,6 +10,8 @@ export const UserSchema = new Schema(
       required: true,
     },
     schoolId: { type: String },
+    firstName: String,
+    lastName: String,
     status: {
       type: String,
       enum: ['ACTIVE', 'SUSPENDED'],
