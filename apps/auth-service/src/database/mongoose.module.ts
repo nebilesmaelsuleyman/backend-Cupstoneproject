@@ -2,5 +2,5 @@
 import { MongooseModule } from '@nestjs/mongoose';
 
 export const DatabaseModule = MongooseModule.forRoot(
-  process.env.MONGO_URI || "",
+  process.env.MONGO_AUTH_URI || "mongodb://localhost:27017/auth_service",
 );

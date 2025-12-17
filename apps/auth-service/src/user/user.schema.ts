@@ -1,22 +1,34 @@
-import { Schema } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
-export const UserSchema = new Schema(
-  {
-    clerkUserId: { type: String, required: true, unique: true },
-    email: { type: String, required: true },
-    role: {
-      type: String,
-      enum: ['ADMIN', 'TEACHER', 'STUDENT','PARENT'],
-      required: true,
-    },
-    schoolId: { type: String },
-    firstName: String,
-    lastName: String,
-    status: {
-      type: String,
-      enum: ['ACTIVE', 'SUSPENDED'],
-      default: 'ACTIVE',
-    },
-  },
-  { timestamps: true },
-);
+@Schema({ timestamps: true })
+export class User extends Document {
+  @Prop({ required: true, unique: true })
+  clerkUserId: string;
+
+  @Prop({ required: true })
+  email: string;
+
+  @Prop({ 
+    enum: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
+    default: 'STUDENT' 
+  })
+  role: string;
+
+  @Prop()
+  schoolId: string;
+
+  @Prop()
+  firstName: string;
+
+  @Prop()
+  lastName: string;
+
+  @Prop({ 
+    enum: ['ACTIVE', 'SUSPENDED'], 
+    default: 'ACTIVE' 
+  })
+  status: string;
+}
+
+export const UserSchema = SchemaFactory.createForClass(User);

@@ -30,7 +30,7 @@ export class AuthController {
 
     return {
       role: user.role,
-      active: user.active,
+      active: user.status,
     }
   }
 }
