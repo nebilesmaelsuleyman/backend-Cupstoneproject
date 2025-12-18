@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { join } from 'path';
-import { AppController } from './api-geteway.controller';
-import { AuthService } from './auth/auth.service';
+import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [AuthModule],
-  controllers: [AppController],
+  imports: [
+    ConfigModule.forRoot({isGlobal:true, envFilePath:'.env'}),
+    AuthModule],
+  controllers: [],
   providers: [],
  
 })

@@ -6,7 +6,7 @@ import { UserController } from './user/user.controller';
 import {ClerkWebhookController} from './webhook/webhook.controller'
 @Module({
  imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/auth_db'),
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/school_management'),
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
     ]),

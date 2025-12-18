@@ -26,13 +26,13 @@ async function bootstrap() {
         options: {
           package: 'auth',
           protoPath: join(process.cwd(), 'proto/auth.proto'),
-          url: 'localhost:5001',
+          url: 'localhost:5002',
         },
       },
     );
 
   await grpc.listen();
-  logger.log('🔌 gRPC listening on localhost:5001');
+  logger.log('🔌 gRPC listening on localhost:5002');
 }
 
 bootstrap();

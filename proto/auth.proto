@@ -6,7 +6,8 @@ package auth;
 service AuthService{
   // Validate or create user
   rpc ValidateOrCreateUser(ValidateOrCreateUserRequest) returns (UserResponse) {}
-
+  
+  
   // Extract user data
   rpc GetUserByClerkId (GetUserRequest) returns (UserResponse) {}
   
@@ -41,8 +42,10 @@ message UpdateUserRequest {
 
 // Response message
 message UserResponse {
-  string id = 1;            
-  string clerk_user_id = 2;
+   string id = 1;
+  string clerkUserId = 2;
   string email = 3;
-  string role = 4;
+  string firstName = 4;
+  string lastName = 5;
+  string role = 6;
 }

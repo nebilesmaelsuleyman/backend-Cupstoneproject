@@ -6,6 +6,11 @@ import {
 } from '@nestjs/common'
 import { AuthService } from './auth.service'
 
+type ValidateOrCreateResult = {
+  active: boolean
+  role: string
+}
+
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private authService: AuthService) {}
@@ -14,10 +19,10 @@ export class RolesGuard implements CanActivate {
     const req = ctx.switchToHttp().getRequest()
     const user = req.user
 
-    const result = await this.authService.validateOrCreateUser(
+    const result = (await this.authService.validateOrCreateUser(
       user.clerkUserId,
       user.email,
-    )
+    )) as ValidateOrCreateResult
 
     if (!result.active) {
       throw new ForbiddenException('User inactive')

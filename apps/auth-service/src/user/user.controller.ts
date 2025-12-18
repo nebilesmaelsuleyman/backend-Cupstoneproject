@@ -41,4 +41,22 @@ async getUser(data: { clerkUserId: string }) {
         role: user.role,
       };
     }
+
+     @GrpcMethod('AuthService', 'GetUserByClerkId')
+     async getUserByClerkId(data:{clerkUserId:string}){
+      const user= await this.userService.getByClerkId(data.clerkUserId)
+      if(!user) return null;
+
+      return {
+         id: user._id.toString(),
+      clerkUserId: user.clerkUserId,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+
+      }
+      
+     }
+    
 }

@@ -7,9 +7,11 @@ export class UserService{
     constructor(
         @InjectModel('User') private userModel:Model<any>
     ){}
+    
     async getByClerkId(clerkUserId:string){
         return this.userModel.findOne({clerkUserId})
     }
+
    async createUser(data: any) {
   try {
     // check if user already exists

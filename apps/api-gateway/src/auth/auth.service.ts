@@ -1,18 +1,23 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import  * as microservices from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
+
 @Injectable()
 export class AuthService implements OnModuleInit {
-  private authService: any;
+  private authGrpcService: any;
     
   constructor(@Inject('AUTH_SERVICE')private client:microservices.ClientGrpc){}
     onModuleInit() {
-      this.authService = this.client.getService<any>('AuthService')
+      this.authGrpcService = this.client.getService<any>('AuthService')
     }
   
-  getUser(clerkUserId: string) {
-    return this.authService.GetUserByClerkId({ clerkUserId });
+  async getUser(clerkUserId: string) {
+    const user$ = this.authGrpcService.GetUserByClerkId({ clerkUserId });
+    return await lastValueFrom(user$);
   }
-  validateOrCreateUser(clerkUserId: string,email:string){
-    return this.authService.ValidateOrCreateUser(clerkUserId,email)
+  
+  async  validateOrCreateUser(clerkUserId: string,email:string){
+    const user$ = this.authGrpcService.ValidateOrCreateUser({ clerkUserId, email });
+    return await lastValueFrom(user$);
   }
 }
