@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { ClerkAuthGuard } from '../../../common/guards/clerk-auth.guard';
-import { AuthGrpcProvider } from './auth-grpc.provider';
-import {AuthService} from './auth.service'
+import {AuthGrpcService} from './auth.grpc.service'
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 @Module({
@@ -20,6 +19,6 @@ import { join } from 'path';
     ]),
   ],
   controllers: [AuthController],
-  providers: [AuthGrpcProvider, ClerkAuthGuard, AuthService],
+  providers: [AuthGrpcService, ClerkAuthGuard,],
 })
 export class AuthModule {}

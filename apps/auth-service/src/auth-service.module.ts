@@ -6,16 +6,21 @@ import { UserController } from './user/user.controller';
 import {ClerkWebhookController} from './webhook/webhook.controller'
 import { MongoModule } from '@app/database'
 import { ConfigModule } from '@nestjs/config'
+import {OnboardingGrpcController} from './onboarding/onboarding.controller'
+import {OnboardingService} from './onboarding/onboarding.service'
+import {SchoolsModule} from './school/school.module'
+
 
 @Module({
  imports: [
+  SchoolsModule,
   ConfigModule.forRoot({ isGlobal: true }),
     MongoModule,
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
     ]),
   ],
-  controllers: [UserController,ClerkWebhookController],
-  providers: [UserService],
+  controllers: [UserController,ClerkWebhookController,OnboardingGrpcController],
+  providers: [UserService,OnboardingService],
 })
 export class AuthServiceModule {}

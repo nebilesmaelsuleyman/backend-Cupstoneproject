@@ -2,33 +2,33 @@ import {
   Controller,
   Get,
   OnModuleInit,
-  Req,
+  Post,
+  Body,
   UseGuards,
+  Req,
   Inject,
 } from '@nestjs/common';
-import {AuthService} from './auth.service';
+import {AuthGrpcService} from './auth.grpc.service';
 import { ClerkAuthGuard } from '../../../common/guards/clerk-auth.guard';
-
 
 
 @Controller('auth')
 export class AuthController  {
-  constructor(private readonly authService:AuthService) {}
+  constructor(private readonly authService:AuthGrpcService) {}
 
   @UseGuards(ClerkAuthGuard)
   @Get('me')
   async getMe(@Req() req: any) {
-    console.log('🔥 get me controller is hitted');
-
     const clerkUserId = req.user.sub;
-     console.log('clerckid from getme ', clerkUserId)
-    const user = await this.authService.getUser(clerkUserId);
-    if (!user) {
-      console.log('User not found, creating user...');
-      return await this.authService.validateOrCreateUser(clerkUserId, req.user.email);
-    }
+    const token = req.headers['authorization'];
+    return this.authService.getUser(clerkUserId, token);
+  }
 
-    return user;
+   @UseGuards(ClerkAuthGuard)
+  @Post('onboarding')
+  async onboard(@Req() req: any, @Body() body: { role: string; schoolCode: string }) {
+    const clerkUserId = req.user.sub;
+    return this.authService.onboardUser(clerkUserId, body.role, body.schoolCode);
   }
 
   

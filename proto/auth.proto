@@ -2,50 +2,51 @@ syntax = "proto3";
 
 package auth;
 
-// The service definition
-service AuthService{
-  // Validate or create user
-  rpc ValidateOrCreateUser(ValidateOrCreateUserRequest) returns (UserResponse) {}
-  
-  
-  // Extract user data
-  rpc GetUserByClerkId (GetUserRequest) returns (UserResponse) {}
-  
-  // Create new user
-  rpc CreateUser (CreateUserRequest) returns (UserResponse) {}
-  
-  // Update user data
-  rpc UpdateUserByClerkId (UpdateUserRequest) returns (UserResponse) {}
+// Service definition
+service AuthService {
+  rpc ValidateOrCreateUser(ValidateOrCreateUserRequest) returns (UserResponse);
+  rpc GetUserByClerkId(GetUserRequest) returns (UserResponse);
+  rpc CreateUser(CreateUserRequest) returns (UserResponse);
+  rpc UpdateUserByClerkId(UpdateUserRequest) returns (UserResponse);
+  rpc OnboardUser(OnboardUserRequest) returns (UserResponse);
 }
 
-// Request messages
+// Onboarding
+message OnboardUserRequest {
+  string clerkUserId = 1;
+  string role = 2;
+  string schoolCode = 3;
+}
+
+// Requests
 message GetUserRequest {
-  string clerk_user_id = 1;
+  string clerkUserId = 1;
 }
 
 message ValidateOrCreateUserRequest {
-  string clerk_user_id = 1;
+  string clerkUserId = 1;
   string email = 2;
 }
 
 message CreateUserRequest {
-  string clerk_user_id = 1;
+  string clerkUserId = 1;
   string email = 2;
   string role = 3;
 }
 
 message UpdateUserRequest {
-  string clerk_user_id = 1;
-  optional string email = 2; 
-  optional string role = 3;
+  string clerkUserId = 1;
+  string email = 2;
+  string role = 3;
 }
 
-// Response message
+// Response
 message UserResponse {
-   string id = 1;
+  string id = 1;
   string clerkUserId = 2;
   string email = 3;
   string firstName = 4;
   string lastName = 5;
   string role = 6;
+  repeated string schoolIds = 7;
 }

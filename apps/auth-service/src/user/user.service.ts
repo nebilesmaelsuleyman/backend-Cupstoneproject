@@ -14,23 +14,23 @@ export class UserService{
 
    async createUser(data: any) {
   try {
-    // check if user already exists
+  
     let user = await this.userModel.findOne({
       clerkUserId: data.clerkUserId,
     });
 
     if (!user) {
-      // create a new user
-      user = new this.userModel(data); // ⚠️ use model instance
-      user = await user.save();        // ⚠️ MUST call save()
-      console.log('🟢 USER CREATED:', user);
+    
+      user = new this.userModel(data); 
+      user = await user.save();        
+      console.log(' USER CREATED:', user);
     } else {
-      console.log('ℹ️ USER ALREADY EXISTS:', user);
+      console.log('ℹ USER ALREADY EXISTS:', user);
     }
 
     return user;
   } catch (error) {
-    console.error('❌ CREATE USER ERROR:', error.message);
+    console.error(' CREATE USER ERROR:', error.message);
     throw error;
   }
 }
@@ -40,7 +40,7 @@ export class UserService{
   return this.userModel.findOne({ clerkUserId })
 }
 
-async updateUser(clerkUserId: string, updateData: Partial<any>) {
+async updateByClerkId(clerkUserId: string, updateData: Partial<any>) {
   return this.userModel.findOneAndUpdate({ clerkUserId }, updateData, { new: true })
 }
 

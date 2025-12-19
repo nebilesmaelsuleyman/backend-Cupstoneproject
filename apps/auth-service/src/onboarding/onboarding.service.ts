@@ -25,7 +25,7 @@ export class OnboardingService {
     // 3️⃣ Update user role and schoolIds
     const updatedSchoolIds = [...new Set([...(user.schoolIds || []), school._id])]
 
-    return this.usersService.updateUser(clerkUserId, {
+    return this.usersService.updateByClerkId(clerkUserId, {
       role,
       schoolIds: updatedSchoolIds,
     })

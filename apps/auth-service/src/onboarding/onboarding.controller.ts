@@ -1,18 +1,17 @@
-import { Controller, Post, Body, Req, UseGuards } from '@nestjs/common'
-import { OnboardingService } from './onboarding.service'
-import { ClerkAuthGuard } from '../../../common/guards/clerk-auth.guard' // your existing Clerk guard
+import { GrpcMethod } from '@nestjs/microservices';
+import {BadRequestException, Controller } from '@nestjs/common'
+import {OnboardingService} from './onboarding.service'
 
-@Controller('onboarding')
-@UseGuards(ClerkAuthGuard)
-export class OnboardingController {
+@Controller()
+export class OnboardingGrpcController {
   constructor(private readonly onboardingService: OnboardingService) {}
 
-  @Post()
-  async onboard(
-    @Req() req,
-    @Body() body: { role: 'ADMIN' | 'TEACHER' | 'STUDENT' | 'PARENT'; schoolCode: string },
-  ) {
-    const clerkUserId = req.user.sub // Clerk userId from JWT
-    return this.onboardingService.onboardUser(clerkUserId, body.role, body.schoolCode)
+  @GrpcMethod('AuthService', 'OnboardUser')
+  async onboardUserGrpc(data: { clerkUserId: string; role: string; schoolCode: string }) {
+     if (!data.clerkUserId || !data.role || !data.schoolCode) {
+      throw new BadRequestException('Missing required fields');
+    }
+
+    return this.onboardingService.onboardUser(data.clerkUserId, data.role as any, data.schoolCode);
   }
 }
