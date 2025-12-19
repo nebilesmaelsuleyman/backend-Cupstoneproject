@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
-import { ClerkAuthGuard } from './clerk-auth.guard';
+import { ClerkAuthGuard } from '../../../common/guards/clerk-auth.guard';
 import { AuthGrpcProvider } from './auth-grpc.provider';
 import {AuthService} from './auth.service'
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -14,7 +14,7 @@ import { join } from 'path';
         options: {
           package: 'auth',
           protoPath: join(process.cwd(), 'proto/auth.proto'),
-          url: 'localhost:5001',
+          url: 'localhost:5002',
         },
       },
     ]),

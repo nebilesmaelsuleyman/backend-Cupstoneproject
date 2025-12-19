@@ -15,8 +15,8 @@ export class User extends Document {
   })
   role: string;
 
-  @Prop()
-  schoolId: string;
+ @Prop({ type: [String], default: [] })
+  schoolIds: string[]
 
   @Prop()
   firstName: string;

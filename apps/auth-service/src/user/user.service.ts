@@ -36,7 +36,12 @@ export class UserService{
 }
 
     
-    async updateByClerkId(clerkUserId:string,data:any){
-        return this.userModel.findByIdAndUpdate({ clerkUserId }, data,{new:true})
-    }
+  async findByClerkId(clerkUserId: string) {
+  return this.userModel.findOne({ clerkUserId })
+}
+
+async updateUser(clerkUserId: string, updateData: Partial<any>) {
+  return this.userModel.findOneAndUpdate({ clerkUserId }, updateData, { new: true })
+}
+
 }

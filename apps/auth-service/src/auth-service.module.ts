@@ -4,9 +4,13 @@ import { UserSchema } from './user/user.schema';
 import { UserService } from './user/user.service';
 import { UserController } from './user/user.controller';
 import {ClerkWebhookController} from './webhook/webhook.controller'
+import { MongoModule } from '@app/database'
+import { ConfigModule } from '@nestjs/config'
+
 @Module({
  imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/school_management'),
+  ConfigModule.forRoot({ isGlobal: true }),
+    MongoModule,
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
     ]),

@@ -7,7 +7,7 @@ import {
   Inject,
 } from '@nestjs/common';
 import {AuthService} from './auth.service';
-import { ClerkAuthGuard } from './clerk-auth.guard';
+import { ClerkAuthGuard } from '../../../common/guards/clerk-auth.guard';
 
 
 
